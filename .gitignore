@@ -219,3 +219,5 @@ __marimo__/
 
 #notes
 initial_notes.md
+# Local runtime data (session DB, caches)
+data/
