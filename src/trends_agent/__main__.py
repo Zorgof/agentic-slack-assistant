@@ -27,9 +27,15 @@ def main(argv: list[str] | None = None) -> int:
 
         return asyncio.run(run_cli(settings, " ".join(args.question) or None))
 
-    # Slack adapter is implemented in phase 3.
-    log.error("adapter_not_implemented", mode=args.mode)
-    return 1
+    from trends_agent.adapters.slack.app import run_http_mode, run_socket_mode
+
+    if args.question:
+        log.warning("question_ignored_in_slack_mode")
+    if settings.slack_mode == "http":
+        run_http_mode(settings)
+    else:
+        asyncio.run(run_socket_mode(settings))
+    return 0
 
 
 if __name__ == "__main__":
