@@ -18,6 +18,7 @@ from agents import (
 
 from trends_agent.agents import default_specialists, triage
 from trends_agent.config import Settings
+from trends_agent.core.hooks import LoggingHooks
 from trends_agent.core.models import AgentRequest, AgentResponse
 from trends_agent.core.postprocess import clean_answer
 from trends_agent.core.registry import AgentRegistry
@@ -71,6 +72,7 @@ class AgentService:
                         session=self._sessions.get(request.session_id),
                         max_turns=self._settings.agent_max_turns,
                         run_config=run_config,
+                        hooks=LoggingHooks(trace_id),
                     ),
                     timeout=self._settings.agent_timeout_seconds,
                 )

@@ -90,7 +90,9 @@ async def test_known_failures_return_friendly_error(
     assert expected in response.text
 
 
-def test_research_instructions_contain_today() -> None:
+def test_research_instructions_contain_today_and_tracked_labs() -> None:
     agent: Agent[Any] = Agent(name="x")
-    text = ai_trends._instructions(RunContextWrapper(context=None), agent)
+    instructions = ai_trends.make_instructions(["OpenAI", "Anthropic"])
+    text = instructions(RunContextWrapper(context=None), agent)
     assert datetime.now(UTC).date().isoformat() in text
+    assert "Tracked frontier labs: OpenAI, Anthropic." in text

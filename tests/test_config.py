@@ -33,3 +33,8 @@ def test_missing_api_key_fails(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_secrets_are_not_leaked_in_repr() -> None:
     settings = Settings(_env_file=None)
     assert "sk-test" not in repr(settings)
+
+
+def test_empty_sources_path_means_bundled_file(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("SOURCES_PATH", "")
+    assert Settings(_env_file=None).sources_path is None

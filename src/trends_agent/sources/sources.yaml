@@ -1,0 +1,64 @@
+# Sources tracked by the AI Trends tools. Edit freely — no code changes needed.
+#
+# providers: frontier labs. `feeds` are RSS/Atom URLs read by get_provider_updates;
+#   optional `exclude_categories` drops noisy feed categories (case-insensitive).
+#   Labs without a feed list only `site`; the agent is told to use web_search
+#   restricted to that site (e.g. "site:anthropic.com/news") instead.
+# framework_repos: GitHub "owner/repo" read by get_framework_releases.
+# arxiv_categories: categories searched by search_arxiv.
+
+providers:
+  - name: OpenAI
+    site: openai.com/news
+    feeds:
+      - https://openai.com/news/rss.xml
+    exclude_categories: [Global Affairs, Startup, Company]
+  - name: Anthropic
+    site: anthropic.com/news
+  - name: Google DeepMind
+    site: deepmind.google/discover/blog
+    feeds:
+      - https://deepmind.google/blog/rss.xml
+      - https://blog.google/technology/ai/rss/
+  - name: Meta AI
+    site: ai.meta.com/blog
+  - name: Mistral
+    site: mistral.ai/news
+  - name: xAI
+    site: x.ai/news
+  - name: DeepSeek
+    site: api-docs.deepseek.com/news
+  - name: Qwen
+    site: qwen.ai
+  - name: Microsoft
+    site: microsoft.com/en-us/research/blog
+    feeds:
+      - https://www.microsoft.com/en-us/research/feed/
+  - name: NVIDIA
+    site: blogs.nvidia.com
+    feeds:
+      - https://blogs.nvidia.com/feed/
+      - https://developer.nvidia.com/blog/feed
+  - name: Hugging Face
+    site: huggingface.co/blog
+    feeds:
+      - https://huggingface.co/blog/feed.xml
+
+framework_repos:
+  - langchain-ai/langchain
+  - langchain-ai/langgraph
+  - run-llama/llama_index
+  - openai/openai-agents-python
+  - crewAIInc/crewAI
+  - microsoft/autogen
+  - microsoft/agent-framework
+  - pydantic/pydantic-ai
+  - modelcontextprotocol/python-sdk
+  - modelcontextprotocol/typescript-sdk
+  - stanfordnlp/dspy
+  - deepset-ai/haystack
+
+arxiv_categories:
+  - cs.CL
+  - cs.LG
+  - cs.AI

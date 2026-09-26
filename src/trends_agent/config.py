@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     openai_model_triage: str = "gpt-5-mini"
     openai_reasoning_research: ReasoningEffort = "low"
     openai_reasoning_triage: ReasoningEffort = "low"
+    # Cheap model used by collect_ai_news for per-lab web searches (labs without RSS).
+    openai_model_search: str = "gpt-5-mini"
 
     # --- Slack (optional here; required only by the Slack adapter) ---
     slack_bot_token: SecretStr | None = None
@@ -42,6 +44,8 @@ class Settings(BaseSettings):
     web_search_context_size: Literal["low", "medium", "high"] = "medium"
     http_timeout_seconds: float = 15.0
     tool_cache_ttl_seconds: int = 900
+    # Override the bundled sources.yaml (lab feeds, GitHub repos, arXiv categories).
+    sources_path: Path | None = None
 
     # --- Agent runtime ---
     agent_max_turns: int = 12
@@ -51,6 +55,11 @@ class Settings(BaseSettings):
     # --- Observability ---
     log_level: str = "INFO"
     log_json: bool = False
+
+    @field_validator("sources_path", mode="before")
+    @classmethod
+    def _empty_path_is_none(cls, value: object) -> object:
+        return None if isinstance(value, str) and not value.strip() else value
 
     @field_validator("allowed_channel_ids", mode="before")
     @classmethod

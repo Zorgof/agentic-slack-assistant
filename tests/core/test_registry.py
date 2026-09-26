@@ -43,7 +43,7 @@ def test_triage_requires_a_specialist(settings: Settings) -> None:
         triage.build(settings, build_tool_registry(settings), AgentRegistry())
 
 
-def test_research_agent_uses_research_model_and_web_search(settings: Settings) -> None:
+def test_research_agent_uses_research_model_and_all_tools(settings: Settings) -> None:
     agent = ai_trends.build(settings, build_tool_registry(settings))
     assert agent.model == settings.openai_model_research
-    assert [t.name for t in agent.tools] == ["web_search"]
+    assert [t.name for t in agent.tools] == ai_trends.TOOLS

@@ -114,6 +114,7 @@ be checked against the current docs when the file is written.
 | Our component (plan) | Lang* alternative | When the alternative is the better choice |
 |---|---|---|
 | OpenAI Agents SDK `Agent` + `Runner` (agent loop) | LangChain `create_agent`, or a custom LangGraph graph | You need to switch model providers often (Anthropic, Gemini, local models) behind one interface, or need explicit control over every step of the loop. |
+| `collect_ai_news` — fixed "collect everything → LLM summarizes" step in front of the agent | A LangGraph graph with parallel fan-out nodes (one per source) + a summarize node | The flow is fixed and known up front and completeness matters more than flexibility — the classic "workflow vs. agent" trade-off (this project hit exactly this: a free agent sometimes skipped labs). |
 | Triage agent + handoffs (`core/registry.py`, `agents/triage.py`) | LangGraph **supervisor** pattern / conditional edges (`langgraph-supervisor`) | Routing becomes complex: multi-step plans, specialist agents running in parallel, or deterministic branches mixed with LLM decisions. |
 | `SQLiteSession` (thread memory) | LangGraph **checkpointer** (`SqliteSaver` / `PostgresSaver`) | You need long-running workflows that survive restarts, "time travel" back to an earlier state, or pause/resume. |
 | Hosted `WebSearchTool` | `langchain-tavily`, Brave/SerpAPI/DuckDuckGo tools from `langchain-community` | You move away from OpenAI or want a dedicated search provider with more control over results. |
@@ -211,6 +212,7 @@ agentic-slack-assistant/
 ### 5.2 Tools (v1)
 | Tool | Input | Output | Purpose |
 |---|---|---|---|
+| `collect_ai_news` | since_days | full digest | **Added in phase 2 (A+B).** Code (not the model) checks every source in parallel: all lab feeds, a per-lab web search (Responses API, `OPENAI_MODEL_SEARCH`) for each lab without RSS, all tracked GitHub repos, HF trending. Used for broad "what's new" questions; the agent must report on every tracked lab (coverage rule). |
 | `web_search` (hosted) | query | results + citations | Broad discovery of news/announcements. |
 | `fetch_url` | url | cleaned text (truncated) | Read the actual announcement/article to verify details. |
 | `get_provider_updates` | provider(s), since_days | dated list of posts | Latest posts from OpenAI, Anthropic, Google/DeepMind, Meta AI, Mistral, xAI, etc. (feeds in `sources.yaml`). |

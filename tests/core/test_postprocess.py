@@ -21,3 +21,13 @@ def test_keeps_other_query_params() -> None:
 def test_leaves_plain_text_untouched() -> None:
     text = "Nothing new (as of today). See [blog](https://openai.com/blog)."
     assert clean_answer(text) == text
+
+
+def test_citation_used_as_link_target_becomes_plain_link() -> None:
+    text = "- Item. [source]([blog.google](https://blog.google/a?utm_source=openai))\n- Next"
+    assert clean_answer(text) == "- Item. [source](https://blog.google/a)\n- Next"
+
+
+def test_removes_leaked_internal_citation_markup() -> None:
+    text = "LangGraph 1.2.12 — 2026-09-21. citefunctions.get_framework_releases\n\nMore"
+    assert clean_answer(text) == "LangGraph 1.2.12 — 2026-09-21.\n\nMore"
